@@ -5,7 +5,13 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <experimental/filesystem>
+#ifdef MELODIC
+    #include <experimental/filesystem>
+    namespace filesystem = std::experimental::filesystem;
+#elif NOETIC
+    #include <filesystem>
+    namespace filesystem = std::filesystem;
+#endif
 #include <memory>
 
 #include <cxxopts.hpp>

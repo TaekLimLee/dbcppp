@@ -3,6 +3,16 @@ cmake_minimum_required(VERSION 3.12)
 
 project("libdbcppp" VERSION 0.1.0)
 
+if($ENV{ROS_DISTRO} STREQUAL "melodic")
+  message("For Ubuntu 18.04")
+  add_compile_definitions(MELODIC)
+elseif($ENV{ROS_DISTRO} STREQUAL "noetic")
+  message("For Ubuntu 20.04")
+  add_compile_definitions(NOETIC)
+else()
+
+endif()
+
 option(build_tests "Build tests" ON)
 option(build_examples "Build examples" ON)
 

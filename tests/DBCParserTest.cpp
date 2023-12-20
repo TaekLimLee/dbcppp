@@ -1,7 +1,13 @@
 
 #include <fstream>
 #include <iomanip>
-#include <experimental/filesystem>
+#ifdef MELODIC
+    #include <experimental/filesystem>
+    namespace filesystem = std::experimental::filesystem;
+#elif NOETIC
+    #include <filesystem>
+    namespace filesystem = std::filesystem;
+#endif
 
 #include "dbcppp/Network.h"
 #include "dbcppp/Network2Functions.h"
@@ -13,7 +19,7 @@
 TEST_CASE("DBCParserTest", "[]")
 {
     std::size_t i = 0;
-    for (const auto& dbc_file : std::experimental::filesystem::directory_iterator(std::experimental::filesystem::path(TEST_FILES_PATH) / "dbc"))
+    for (const auto& dbc_file : filesystem::directory_iterator(filesystem::path(TEST_FILES_PATH) / "dbc"))
     {
         //BOOST_TEST_CHECKPOINT("DBCParserTest: Testing file '" + dbc_file.path().string() + "'");
         if (dbc_file.path().extension() != ".dbc")
@@ -44,7 +50,7 @@ TEST_CASE("DBCParserTest", "[]")
             std::cout << error_msg << std::endl;
         }
         REQUIRE(*spec == *test);
-        std::experimental::filesystem::remove(dbc_file_tmp);
+        filesystem::remove(dbc_file_tmp);
         i++;
     }
 }

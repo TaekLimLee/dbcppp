@@ -7,7 +7,13 @@
 #include <istream>
 #include <functional>
 #include <unordered_map>
-#include <experimental/filesystem>
+#ifdef MELODIC
+    #include <experimental/filesystem>
+    namespace filesystem = std::experimental::filesystem;
+#elif NOETIC
+    #include <filesystem>
+    namespace filesystem = std::filesystem;
+#endif
 
 #include "Export.h"
 #include "Iterator.h"
@@ -37,7 +43,7 @@ namespace dbcppp
             , std::vector<std::unique_ptr<IAttribute>>&& attribute_defaults
             , std::vector<std::unique_ptr<IAttribute>>&& attribute_values
             , std::string&& comment);
-        static std::map<std::string, std::unique_ptr<INetwork>> LoadNetworkFromFile(const std::experimental::filesystem::path& filename);
+        static std::map<std::string, std::unique_ptr<INetwork>> LoadNetworkFromFile(const filesystem::path& filename);
         static std::unique_ptr<INetwork> LoadDBCFromIs(std::istream& is);
         static std::map<std::string, std::unique_ptr<INetwork>> LoadKCDFromIs(std::istream& is);
         
